@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db_config import get_db_connection
 from datetime import date
 
+
 app = Flask(__name__)
 app.secret_key = "feedback_system_secret_key_2026"
 
@@ -39,6 +40,46 @@ def add_notification(user_id, title, message):
     cursor.close()
     connection.close()
 
+
+@app.context_processor
+def inject_notifications():
+    if "user_id" not in session:
+        return {
+            "notifications": [],
+            "unread_notifications": 0
+        }
+
+    connection = db()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT * FROM notifications
+        WHERE user_id = %s
+        ORDER BY created_at DESC
+        LIMIT 5
+        """,
+        (session["user_id"],)
+    )
+    notifications = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT COUNT(*) FROM notifications
+        WHERE user_id = %s AND is_read = 0
+        """,
+        (session["user_id"],)
+    )
+    unread_row = cursor.fetchone()
+    unread_notifications = unread_row[0] if unread_row else 0
+
+    cursor.close()
+    connection.close()
+
+    return {
+        "notifications": notifications,
+        "unread_notifications": unread_notifications
+    }
 
 @app.route("/")
 def login():
@@ -282,6 +323,39 @@ def student_dashboard():
         submitted_feedback=submitted_feedback,
         unread_notifications=unread_notifications
     )
+
+
+@app.route("/student/issues", methods=["GET", "POST"])
+def student_issues():
+    check = role_required("student")
+    if check:
+        return check
+
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        description = request.form.get("description", "").strip()
+        priority = request.form.get("priority", "Medium")
+
+        if not title or not description:
+            flash("Title and description are required.", "warning")
+            return redirect(url_for("student_issues"))
+
+        cursor = mysql.connection.cursor()
+        cursor.execute(
+            """
+            INSERT INTO issues
+            (student_id, department_id, title, description, priority, status, created_at)
+            VALUES (%s, %s, %s, %s, %s, 'Submitted', NOW())
+            """,
+            (session["user_id"], session["department_id"], title, description, priority)
+        )
+        mysql.connection.commit()
+        cursor.close()
+
+        flash("Issue submitted successfully.", "success")
+        return redirect(url_for("student_issues"))
+
+    return render_template("student_issues.html")
 
 
 @app.route("/director/departments", methods=["GET", "POST"])

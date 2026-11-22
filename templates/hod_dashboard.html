@@ -4,7 +4,7 @@
 <h3>HOD Dashboard</h3>
 
 <div class="row g-4">
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Total Faculty</h6>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Total Students</h6>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Feedback</h6>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Pending Issues</h6>
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div class="mt-4">
+<div class="mt-4 d-flex flex-wrap gap-2">
     <a href="{{ url_for('manage_faculty') }}" class="btn btn-primary">Manage Faculty</a>
     <a href="{{ url_for('manage_students') }}" class="btn btn-secondary">Manage Students</a>
     <a href="{{ url_for('manage_issues') }}" class="btn btn-warning">Issue Tracking</a>
@@ -52,9 +52,13 @@
 
 <div class="card p-3 mt-4">
     <h5>Category-wise Average Rating</h5>
-    <canvas id="categoryChart"></canvas>
+    <div style="height: 350px;">
+        <canvas id="categoryChart"></canvas>
+    </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
 new Chart(document.getElementById('categoryChart'), {
     type: 'bar',

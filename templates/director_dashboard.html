@@ -4,7 +4,7 @@
 <h3>Director Dashboard</h3>
 
 <div class="row g-4">
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Total Departments</h6>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Total Users</h6>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Total Feedback</h6>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-3">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h6 class="text-muted">Pending Issues</h6>
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div class="mt-4">
+<div class="mt-4 d-flex flex-wrap gap-2">
     <a href="{{ url_for('manage_departments') }}" class="btn btn-primary">Departments</a>
     <a href="{{ url_for('manage_users') }}" class="btn btn-secondary">Users</a>
     <a href="{{ url_for('manage_categories') }}" class="btn btn-info">Categories</a>
@@ -50,22 +50,28 @@
     <a href="{{ url_for('reports') }}" class="btn btn-success">Reports</a>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card p-3">
+<div class="row mt-4 g-4">
+    <div class="col-12 col-lg-6">
+        <div class="card p-3 h-100">
             <h5>Department-wise Average Rating</h5>
-            <canvas id="departmentChart"></canvas>
+            <div style="height: 350px;">
+                <canvas id="departmentChart"></canvas>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="card p-3">
+    <div class="col-12 col-lg-6">
+        <div class="card p-3 h-100">
             <h5>Category-wise Feedback Count</h5>
-            <canvas id="categoryChart"></canvas>
+            <div style="height: 350px;">
+                <canvas id="categoryChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
 new Chart(document.getElementById('departmentChart'), {
     type: 'bar',
