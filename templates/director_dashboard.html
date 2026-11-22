@@ -3,32 +3,40 @@
 {% block content %}
 <h3>Director Dashboard</h3>
 
-<div class="row mt-4">
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h5>Departments</h5>
-            <h2>{{ total_departments }}</h2>
+<div class="row g-4">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Total Departments</h6>
+                <h2 class="text-primary">{{ total_departments }}</h2>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h5>Users</h5>
-            <h2>{{ total_users }}</h2>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Total Users</h6>
+                <h2 class="text-success">{{ total_users }}</h2>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h5>Feedback</h5>
-            <h2>{{ total_feedback }}</h2>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Total Feedback</h6>
+                <h2 class="text-info">{{ total_feedback }}</h2>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h5>Pending Issues</h5>
-            <h2>{{ pending_issues }}</h2>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Pending Issues</h6>
+                <h2 class="text-info">{{ pending_issues }}</h2>
+            </div>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@
 <h3>Topper Selection System</h3>
 
 {% if toppers_list %}
+<div class="table-responsive">
 <table class="table table-bordered mt-3">
     <thead>
         <tr>
@@ -33,6 +34,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% else %}
 <div class="alert alert-info">No marks data available.</div>
 {% endif %}

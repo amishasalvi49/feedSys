@@ -938,9 +938,7 @@ def comparison_report():
     connection = db()
     cursor = connection.cursor(dictionary=True)
 
-    cursor.execute(
-        "SELECT * FROM feedback_cycles ORDER BY cycle_id DESC"
-    )
+    cursor.execute("SELECT * FROM feedback_cycles ORDER BY cycle_id DESC")
     cycles = cursor.fetchall()
 
     current_cycle_id = request.args.get("current_cycle_id", type=int)
@@ -955,7 +953,12 @@ def comparison_report():
     comparison = []
     improvement = 0
 
-    if current_cycle_id and previous_cycle_id:
+    same_cycle = False
+
+    if current_cycle_id and previous_cycle_id and current_cycle_id == previous_cycle_id:
+        same_cycle = True
+
+    if current_cycle_id and previous_cycle_id and not same_cycle:
         cursor.execute(
             """SELECT
                COUNT(*) AS total_responses,
@@ -1008,8 +1011,66 @@ def comparison_report():
         current_summary=current_summary,
         previous_summary=previous_summary,
         comparison=comparison,
-        improvement=improvement
+        improvement=improvement,
+        same_cycle=same_cycle
     )
+
+
+@app.route("/director/export-report")
+def export_report():
+    check = role_required("director")
+    if check:
+        return check
+
+    connection = db()
+    cursor = connection.cursor(dictionary=True)
+
+    query = """
+        SELECT d.department_name, c.category_name,
+               COUNT(f.response_id) AS total_responses,
+               COALESCE(AVG(f.rating_value),0) AS average_rating,
+               SUM(CASE WHEN f.yes_no_value='Yes' THEN 1 ELSE 0 END) AS yes_count,
+               SUM(CASE WHEN f.yes_no_value='No' THEN 1 ELSE 0 END) AS no_count
+        FROM feedback_responses f
+        JOIN departments d ON f.department_id=d.department_id
+        JOIN feedback_categories c ON f.category_id=c.category_id
+        GROUP BY d.department_id, c.category_id
+        ORDER BY d.department_name, c.category_name
+    """
+
+    cursor.execute(query)
+    report_data = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow([
+        "Department", "Category", "Total Responses",
+        "Average Rating", "Yes", "No"
+    ])
+
+    for row in report_data:
+        writer.writerow([
+            row["department_name"],
+            row["category_name"],
+            row["total_responses"],
+            row["average_rating"],
+            row["yes_count"],
+            row["no_count"]
+        ])
+
+    output.seek(0)
+
+    return send_file(
+        io.BytesIO(output.getvalue().encode("utf-8")),
+        mimetype="text/csv",
+        as_attachment=True,
+        download_name="feedback_report.csv"
+    )
+
 
 @app.route("/hod/top-attendance")
 def top_attendance():
@@ -1102,6 +1163,7 @@ def notifications():
     connection.close()
 
     return render_template("notifications.html", notifications=notification_list)
+
 
 
 if __name__ == "__main__":

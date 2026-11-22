@@ -4,6 +4,7 @@
 <h3>My Feedback Status</h3>
 
 {% if submissions %}
+<div class="table-responsive">
 <table class="table table-bordered mt-3">
     <thead>
         <tr>
@@ -23,6 +24,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% else %}
 <div class="alert alert-info">You have not submitted any feedback yet.</div>
 {% endif %}

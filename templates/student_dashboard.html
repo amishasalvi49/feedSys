@@ -1,35 +1,156 @@
 {% extends "base.html" %}
 
+
 {% block content %}
-<h3>Student Dashboard</h3>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <h3 class="mb-0">Student Dashboard</h3>
+
+    <div class="d-flex flex-column flex-sm-row gap-2">
+        <a href="{{ url_for('submit_feedback') }}" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Submit Feedback
+        </a>
+
+        <a href="{{ url_for('feedback_status') }}" class="btn btn-secondary">
+            <i class="bi bi-check2-circle"></i> Feedback Status
+        </a>
+    </div>
+</div>
 
 {% if student %}
-<div class="alert alert-info">
-    Roll No: <strong>{{ student.roll_no }}</strong> |
-    Year: <strong>{{ student.year }}</strong> |
-    Semester: <strong>{{ student.semester }}</strong> |
-    Section: <strong>{{ student.section }}</strong>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row g-3 text-center text-md-start">
+            <div class="col-12 col-md-3">
+                <div class="border rounded-3 p-3">
+                    <div class="text-muted small">Roll No</div>
+                    <div class="fw-bold">{{ student.roll_no }}</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <div class="border rounded-3 p-3">
+                    <div class="text-muted small">Year</div>
+                    <div class="fw-bold">{{ student.year }}</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <div class="border rounded-3 p-3">
+                    <div class="text-muted small">Semester</div>
+                    <div class="fw-bold">{{ student.semester }}</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <div class="border rounded-3 p-3">
+                    <div class="text-muted small">Section</div>
+                    <div class="fw-bold">{{ student.section }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endif %}
 
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card text-center p-3">
-            <h5>Feedback Submitted</h5>
-            <h2>{{ submitted_feedback }}</h2>
+<div class="row g-4 mb-4">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-2">
+                    <i class="bi bi-chat-left-text fs-1 text-primary"></i>
+                </div>
+                <h6 class="text-muted">Feedback Submitted</h6>
+                <h2 class="mb-0 text-primary">{{ submitted_feedback }}</h2>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="card text-center p-3">
-            <h5>Unread Notifications</h5>
-            <h2>{{ unread_notifications }}</h2>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-2">
+                    <i class="bi bi-bell fs-1 text-warning"></i>
+                </div>
+                <h6 class="text-muted">Unread Notifications</h6>
+                <h2 class="mb-0 text-warning">{{ unread_notifications }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-2">
+                    <i class="bi bi-list-check fs-1 text-success"></i>
+                </div>
+                <h6 class="text-muted">Quick Actions</h6>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('submit_feedback') }}" class="btn btn-primary">
+                        Submit Feedback
+                    </a>
+
+                    <a href="{{ url_for('feedback_status') }}" class="btn btn-outline-secondary">
+                        Feedback Status
+                    </a>
+
+                    <a href="{{ url_for('notifications') }}" class="btn btn-outline-primary">
+                        Notifications
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="mt-4">
-    <a href="{{ url_for('submit_feedback') }}" class="btn btn-primary">Submit Feedback</a>
-    <a href="{{ url_for('feedback_status') }}" class="btn btn-secondary">Feedback Status</a>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="mb-3">Quick Links</h5>
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+                <a href="{{ url_for('submit_feedback') }}" class="text-decoration-none">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body text-center">
+                            <i class="bi bi-pencil-square fs-3 text-primary"></i>
+                            <div class="mt-2 fw-semibold">Submit Feedback</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <a href="{{ url_for('feedback_status') }}" class="text-decoration-none">
+                    <div class="card h-100 border-secondary">
+                        <div class="card-body text-center">
+                            <i class="bi bi-check2-circle fs-3 text-secondary"></i>
+                            <div class="mt-2 fw-semibold">Feedback Status</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <a href="{{ url_for('student_issues') }}" class="text-decoration-none">
+                    <div class="card h-100 border-danger">
+                        <div class="card-body text-center">
+                            <i class="bi bi-bug fs-3 text-danger"></i>
+                            <div class="mt-2 fw-semibold">Raise Issue</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <a href="{{ url_for('toppers') }}" class="text-decoration-none">
+                    <div class="card h-100 border-success">
+                        <div class="card-body text-center">
+                            <i class="bi bi-trophy fs-3 text-success"></i>
+                            <div class="mt-2 fw-semibold">Toppers</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

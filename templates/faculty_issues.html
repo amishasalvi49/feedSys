@@ -4,6 +4,7 @@
 <h3>Assigned Issues</h3>
 
 {% if issues %}
+<div class="table-responsive">
 <table class="table table-bordered mt-3">
     <thead>
         <tr>
@@ -48,6 +49,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% else %}
 <div class="alert alert-info">No issues assigned to you.</div>
 {% endif %}

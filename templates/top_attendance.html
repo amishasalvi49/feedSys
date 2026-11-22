@@ -4,6 +4,7 @@
 <h3>Top Attendance Students</h3>
 
 {% if students %}
+<div class="table-responsive">
 <table class="table table-bordered mt-3">
     <thead>
         <tr>
@@ -29,6 +30,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% else %}
 <div class="alert alert-info">No attendance data available.</div>
 {% endif %}
