@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Faculty Dashboard</h3>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-center p-3">
+            <h5>Total Feedback</h5>
+            <h2>{{ total_feedback }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center p-3">
+            <h5>Average Rating</h5>
+            <h2>{{ average_rating }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center p-3">
+            <h5>Assigned Issues</h5>
+            <h2>{{ assigned_issues }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('faculty_feedback') }}" class="btn btn-primary">My Feedback</a>
+    <a href="{{ url_for('faculty_issues') }}" class="btn btn-warning">Assigned Issues</a>
+</div>
+{% endblock %}

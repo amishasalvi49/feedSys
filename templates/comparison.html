@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Feedback Comparison Report</h2>
+        <a href="{{ url_for('reports') }}" class="btn btn-secondary">Back to Reports</a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('comparison_report') }}" class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label">Current Feedback Cycle</label>
+                    <select name="current_cycle_id" class="form-select" required>
+                        {% for cycle in cycles %}
+                        <option value="{{ cycle.cycle_id }}"
+                            {% if cycle.cycle_id == current_cycle_id %}selected{% endif %}>
+                            {{ cycle.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label">Previous Feedback Cycle</label>
+                    <select name="previous_cycle_id" class="form-select" required>
+                        {% for cycle in cycles %}
+                        <option value="{{ cycle.cycle_id }}"
+                            {% if cycle.cycle_id == previous_cycle_id %}selected{% endif %}>
+                            {{ cycle.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary w-100">Compare</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if current_summary and previous_summary %}
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Current Average Rating</h6>
+                    <h2 class="text-primary">{{ current_summary.average_rating or 0 }}</h2>
+                    <p class="mb-0">{{ current_summary.total_responses }} responses</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Previous Average Rating</h6>
+                    <h2 class="text-secondary">{{ previous_summary.average_rating or 0 }}</h2>
+                    <p class="mb-0">{{ previous_summary.total_responses }} responses</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Improvement</h6>
+                    <h2 class="{{ 'text-success' if improvement >= 0 else 'text-danger' }}">
+                        {{ improvement }}%
+                    </h2>
+                    <p class="mb-0">Compared to previous cycle</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-3">Category-wise Comparison</h5>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Category</th>
+                            <th>Current Rating</th>
+                            <th>Previous Rating</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in comparison %}
+                        <tr>
+                            <td>{{ row.category_name }}</td>
+                            <td>{{ row.current_rating or 0 }}</td>
+                            <td>{{ row.previous_rating or 0 }}</td>
+                            <td>
+                                {% if row.current_rating and row.previous_rating %}
+                                    {% set change = row.current_rating - row.previous_rating %}
+                                    {% if change > 0 %}
+                                        <span class="badge bg-success">+{{ change }}</span>
+                                    {% elif change < 0 %}
+                                        <span class="badge bg-danger">{{ change }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No Change</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge bg-secondary">No Data</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="mb-3">Rating Comparison Chart</h5>
+            <canvas id="comparisonChart" height="100"></canvas>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="alert alert-warning">
+        Please add at least two feedback cycles to generate comparison report.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('comparisonChart');
+
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for row in comparison %}
+                    "{{ row.category_name }}"{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                datasets: [
+                    {
+                        label: 'Current Cycle',
+                        data: [
+                            {% for row in comparison %}
+                            {{ row.current_rating or 0 }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(13, 110, 253, 0.7)'
+                    },
+                    {
+                        label: 'Previous Cycle',
+                        data: [
+                            {% for row in comparison %}
+                            {{ row.previous_rating or 0 }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(108, 117, 125, 0.7)'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

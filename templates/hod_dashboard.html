@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>HOD Dashboard</h3>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Faculty</h5>
+            <h2>{{ total_faculty }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Students</h5>
+            <h2>{{ total_students }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Feedback</h5>
+            <h2>{{ total_feedback }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Pending Issues</h5>
+            <h2>{{ pending_issues }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('manage_faculty') }}" class="btn btn-primary">Manage Faculty</a>
+    <a href="{{ url_for('manage_students') }}" class="btn btn-secondary">Manage Students</a>
+    <a href="{{ url_for('manage_issues') }}" class="btn btn-warning">Issue Tracking</a>
+    <a href="{{ url_for('reports') }}" class="btn btn-success">Reports</a>
+    <a href="{{ url_for('top_attendance') }}" class="btn btn-info">Top Attendance</a>
+    <a href="{{ url_for('toppers') }}" class="btn btn-dark">Toppers</a>
+</div>
+
+<div class="card p-3 mt-4">
+    <h5>Category-wise Average Rating</h5>
+    <canvas id="categoryChart"></canvas>
+</div>
+
+<script>
+new Chart(document.getElementById('categoryChart'), {
+    type: 'bar',
+    data: {
+        labels: [{% for c in category_ratings %}'{{ c.category_name }}',{% endfor %}],
+        datasets: [{
+            label: 'Average Rating',
+            data: [{% for c in category_ratings %}{{ c.avg_rating }},{% endfor %}]
+        }]
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3>Anonymous Feedback Form</h3>
+
+        <form method="POST">
+            <div class="mb-3">
+                <label>Feedback Cycle</label>
+                <select name="cycle_id" class="form-select" required>
+                    {% for cycle in cycles %}
+                        <option value="{{ cycle.cycle_id }}">{{ cycle.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Feedback Category</label>
+                <select name="category_id" class="form-select" required>
+                    {% for category in categories %}
+                        <option value="{{ category.category_id }}">{{ category.category_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Faculty</label>
+                <select name="faculty_id" class="form-select">
+                    <option value="">General Feedback</option>
+                    {% for faculty in faculty_list %}
+                        <option value="{{ faculty.faculty_id }}">Faculty ID {{ faculty.faculty_id }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Rating (0 to 5)</label>
+                <input type="number" name="rating" min="0" max="5" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Are you satisfied?</label>
+                <select name="yes_no" class="form-select" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Suggestion</label>
+                <textarea name="suggestion" class="form-control" rows="3"></textarea>
+            </div>
+
+            <button class="btn btn-primary">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

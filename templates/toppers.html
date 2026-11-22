@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Topper Selection System</h3>
+
+{% if toppers_list %}
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Year</th>
+            <th>Semester</th>
+            <th>Total Marks</th>
+            <th>Maximum Marks</th>
+            <th>Percentage</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for student in toppers_list %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ student.full_name }}</td>
+            <td>{{ student.roll_no }}</td>
+            <td>{{ student.year }}</td>
+            <td>{{ student.semester }}</td>
+            <td>{{ student.total_marks }}</td>
+            <td>{{ student.maximum_marks }}</td>
+            <td>{{ student.percentage }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">No marks data available.</div>
+{% endif %}
+{% endblock %}

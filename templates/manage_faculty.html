@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Manage Faculty</h3>
+
+<div class="card p-3 mb-4">
+    <h5>Add New Faculty</h5>
+
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Full Name</label>
+                <input type="text" name="full_name" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Employee Code</label>
+                <input type="text" name="employee_code" class="form-control">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Designation</label>
+                <input type="text" name="designation" class="form-control">
+            </div>
+        </div>
+
+        <button class="btn btn-primary">Add Faculty</button>
+    </form>
+</div>
+
+<h5>Faculty List</h5>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Employee Code</th>
+            <th>Designation</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for faculty in faculty_list %}
+        <tr>
+            <td>{{ faculty.user_id }}</td>
+            <td>{{ faculty.full_name }}</td>
+            <td>{{ faculty.email }}</td>
+            <td>{{ faculty.employee_code }}</td>
+            <td>{{ faculty.designation }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

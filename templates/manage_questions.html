@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Manage Feedback Questions</h3>
+
+<div class="card p-3 mb-4">
+    <h5>Add New Question</h5>
+
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Category</label>
+                <select name="category_id" class="form-select" required>
+                    {% for category in categories %}
+                        <option value="{{ category.category_id }}">
+                            {{ category.category_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Question Type</label>
+                <select name="question_type" class="form-select" required>
+                    <option value="rating">Rating (0 to 5)</option>
+                    <option value="yes_no">Yes / No</option>
+                    <option value="text">Text / Suggestion</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Question Text</label>
+                <input type="text" name="question_text" class="form-control" required>
+            </div>
+        </div>
+
+        <button class="btn btn-primary">Add Question</button>
+    </form>
+</div>
+
+<h5>Question List</h5>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Question</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for question in questions %}
+        <tr>
+            <td>{{ question.question_id }}</td>
+            <td>{{ question.category_name }}</td>
+            <td>{{ question.question_text }}</td>
+            <td>{{ question.question_type }}</td>
+            <td>{{ 'Active' if question.is_active else 'Inactive' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

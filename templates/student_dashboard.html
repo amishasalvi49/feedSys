@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Student Dashboard</h3>
+
+{% if student %}
+<div class="alert alert-info">
+    Roll No: <strong>{{ student.roll_no }}</strong> |
+    Year: <strong>{{ student.year }}</strong> |
+    Semester: <strong>{{ student.semester }}</strong> |
+    Section: <strong>{{ student.section }}</strong>
+</div>
+{% endif %}
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card text-center p-3">
+            <h5>Feedback Submitted</h5>
+            <h2>{{ submitted_feedback }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card text-center p-3">
+            <h5>Unread Notifications</h5>
+            <h2>{{ unread_notifications }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('submit_feedback') }}" class="btn btn-primary">Submit Feedback</a>
+    <a href="{{ url_for('feedback_status') }}" class="btn btn-secondary">Feedback Status</a>
+</div>
+{% endblock %}

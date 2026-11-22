@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Top Attendance Students</h3>
+
+{% if students %}
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Year</th>
+            <th>Semester</th>
+            <th>Attendance</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for student in students %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ student.full_name }}</td>
+            <td>{{ student.roll_no }}</td>
+            <td>{{ student.year }}</td>
+            <td>{{ student.semester }}</td>
+            <td>{{ student.attendance_percentage|round(2) }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">No attendance data available.</div>
+{% endif %}
+{% endblock %}

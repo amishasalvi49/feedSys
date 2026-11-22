@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Manage Feedback Categories</h3>
+
+<div class="card p-3 mb-4">
+    <h5>Add New Category</h5>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label>Category Name</label>
+            <input type="text" name="category_name" class="form-control" required>
+        </div>
+
+        <button class="btn btn-primary">Add Category</button>
+    </form>
+</div>
+
+<h5>Category List</h5>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Category Name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for category in categories %}
+        <tr>
+            <td>{{ category.category_id }}</td>
+            <td>{{ category.category_name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

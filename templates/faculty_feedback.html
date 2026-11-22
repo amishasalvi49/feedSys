@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>My Feedback</h3>
+
+{% if feedback_list %}
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Feedback Cycle</th>
+            <th>Category</th>
+            <th>Rating</th>
+            <th>Satisfied</th>
+            <th>Suggestion</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for feedback in feedback_list %}
+        <tr>
+            <td>{{ feedback.title }}</td>
+            <td>{{ feedback.category_name }}</td>
+            <td>{{ feedback.rating_value }}</td>
+            <td>{{ feedback.yes_no_value }}</td>
+            <td>{{ feedback.text_response or '-' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">No feedback received yet.</div>
+{% endif %}
+{% endblock %}

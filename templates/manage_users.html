@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Manage Users</h3>
+
+<form method="POST" class="card p-3 mb-3">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label>Full Name</label>
+            <input type="text" name="full_name" class="form-control" required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Role</label>
+            <select name="role" class="form-select" required>
+                <option value="hod">HOD</option>
+                <option value="faculty">Faculty</option>
+                <option value="student">Student</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Department</label>
+            <select name="department_id" class="form-select">
+                <option value="">Select Department</option>
+                {% for department in departments %}
+                    <option value="{{ department.department_id }}">{{ department.department_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Roll No / Employee Code</label>
+            <input type="text" name="roll_no" class="form-control">
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Year</label>
+            <input type="number" name="year" class="form-control" value="1">
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Semester</label>
+            <input type="number" name="semester" class="form-control" value="1">
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Section</label>
+            <input type="text" name="section" class="form-control" value="A">
+        </div>
+    </div>
+
+    <button class="btn btn-primary">Add User</button>
+</form>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Department</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.department_name or '-' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h3>Feedback Reports</h3>
+
+<form method="GET" action="{{ url_for('reports') }}" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label class="form-label">Department</label>
+        <select name="department_id" class="form-select">
+            <option value="">All Departments</option>
+            {% for dept in departments %}
+            <option value="{{ dept.department_id }}"
+                {% if dept.department_id == selected_department %}selected{% endif %}>
+                {{ dept.department_name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Feedback Cycle</label>
+        <select name="cycle_id" class="form-select">
+            <option value="">All Cycles</option>
+            {% for cycle in cycles %}
+            <option value="{{ cycle.cycle_id }}"
+                {% if cycle.cycle_id == selected_cycle %}selected{% endif %}>
+                {{ cycle.title }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">
+            Generate Report
+        </button>
+    </div>
+</form>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Department</th>
+            <th>Category</th>
+            <th>Total Responses</th>
+            <th>Average Rating</th>
+            <th>Yes</th>
+            <th>No</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for row in report_data %}
+        <tr>
+            <td>{{ row.department_name }}</td>
+            <td>{{ row.category_name }}</td>
+            <td>{{ row.total_responses }}</td>
+            <td>{{ row.average_rating|round(2) }}</td>
+            <td>{{ row.yes_count }}</td>
+            <td>{{ row.no_count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Director Dashboard</h3>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Departments</h5>
+            <h2>{{ total_departments }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Users</h5>
+            <h2>{{ total_users }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Feedback</h5>
+            <h2>{{ total_feedback }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Pending Issues</h5>
+            <h2>{{ pending_issues }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('manage_departments') }}" class="btn btn-primary">Departments</a>
+    <a href="{{ url_for('manage_users') }}" class="btn btn-secondary">Users</a>
+    <a href="{{ url_for('manage_categories') }}" class="btn btn-info">Categories</a>
+    <a href="{{ url_for('manage_questions') }}" class="btn btn-warning">Questions</a>
+    <a href="{{ url_for('manage_cycles') }}" class="btn btn-dark">Feedback Cycles</a>
+    <a href="{{ url_for('reports') }}" class="btn btn-success">Reports</a>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5>Department-wise Average Rating</h5>
+            <canvas id="departmentChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5>Category-wise Feedback Count</h5>
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+new Chart(document.getElementById('departmentChart'), {
+    type: 'bar',
+    data: {
+        labels: [{% for d in department_ratings %}'{{ d.department_name }}',{% endfor %}],
+        datasets: [{
+            label: 'Average Rating',
+            data: [{% for d in department_ratings %}{{ d.avg_rating }},{% endfor %}]
+        }]
+    }
+});
+
+new Chart(document.getElementById('categoryChart'), {
+    type: 'bar',
+    data: {
+        labels: [{% for c in category_counts %}'{{ c.category_name }}',{% endfor %}],
+        datasets: [{
+            label: 'Feedback Count',
+            data: [{% for c in category_counts %}{{ c.total }},{% endfor %}]
+        }]
+    }
+});
+</script>
+{% endblock %}

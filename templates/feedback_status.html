@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>My Feedback Status</h3>
+
+{% if submissions %}
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Feedback Cycle</th>
+            <th>Submitted On</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for submission in submissions %}
+        <tr>
+            <td>{{ submission.title }}</td>
+            <td>{{ submission.submitted_at }}</td>
+            <td>Submitted</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">You have not submitted any feedback yet.</div>
+{% endif %}
+{% endblock %}
